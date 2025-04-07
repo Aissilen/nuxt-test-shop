@@ -2,12 +2,17 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  ssr: false,
+  ssr: true,
   modules: ['nuxt-vuefire'],
   vuefire: {
     auth: {
       enabled: true,
-      sessionCookie: false,
+      sessionCookie: true,
+      serviceAccount: {
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      }
     },
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
@@ -18,5 +23,8 @@ export default defineNuxtConfig({
       appId: process.env.FIREBASE_APP_ID,
       measurementId: process.env.FIREBASE_MEASUREMENT_ID,
     },
+  },
+  nitro: {
+    preset: 'node-server'
   }
 })

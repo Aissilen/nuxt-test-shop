@@ -1,92 +1,125 @@
 <script setup lang="ts">
-import { signOut } from 'firebase/auth';
-import { PlusIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline';
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
+import { getAuth, signOut } from 'firebase/auth'
+import { PlusIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
+import { useFirestore } from 'vuefire'
 
-const currentUser = useCurrentUser();
-const auth = useFirebaseAuth();
-const isAdmin = computed(() => currentUser.value?.email === 'ivanlobanov97@gmail.com')
+const router = useRouter()
+const db = useFirestore()
+const beers = ref([])
+const loading = ref(true)
+const isAdmin = ref(false)
 
-const beers = ref([
-  {
-    id: 1,
-    name: 'Pilsner Urquell',
-    description: 'Классическое чешское пиво с мягким вкусом',
-    price: 250,
-    stock: 10,
-    image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
-  },
-  {
-    id: 2,
-    name: 'Guinness',
-    description: 'Тёмное ирландское пиво с кремовой пеной',
-    price: 300,
-    stock: 5,
-    image: 'https://images.unsplash.com/photo-1535958636474-b021ca7d9c3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80'
+onMounted(async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'beers'))
+    beers.value = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+      imageError: false
+    }))
+  } catch (error) {
+    console.error('Error fetching beers:', error)
+  } finally {
+    loading.value = false
   }
-])
 
-const handleSignOut = () => {
-  signOut(auth);
+  // Check if user is admin
+  const auth = getAuth()
+  const user = auth.currentUser
+  if (user) {
+    // Here you would typically check the user's role in your database
+    // For now, we'll just set isAdmin to true for demonstration
+    isAdmin.value = true
+  }
+})
+
+const deleteBeer = async (id: string) => {
+  try {
+    await deleteDoc(doc(db, 'beers', id))
+    beers.value = beers.value.filter(beer => beer.id !== id)
+  } catch (error) {
+    console.error('Error deleting beer:', error)
+  }
+}
+
+const handleSignOut = async () => {
+  try {
+    const auth = getAuth()
+    await signOut(auth)
+    router.push('/login')
+  } catch (error) {
+    console.error('Error signing out:', error)
+  }
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <div class="container mx-auto px-4 py-8">
+  <div class="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">Пивная витрина</h1>
-        <div class="flex items-center gap-4">
+        <h1 class="text-3xl font-bold text-white">Витрина пива</h1>
+        <div class="flex space-x-4">
           <UButton
             v-if="isAdmin"
             color="primary"
-            to="/admin/create"
-            class="shadow-md hover:shadow-lg transition-shadow"
+            variant="solid"
+            @click="navigateTo('/add-beer')"
           >
-            <PlusIcon class="w-5 h-5 mr-2" />
+            <PlusIcon class="h-5 w-5 mr-2" />
             Добавить пиво
           </UButton>
           <UButton
-            @click="handleSignOut"
             color="gray"
             variant="ghost"
-            class="hover:bg-gray-100"
+            @click="handleSignOut"
           >
-            <ArrowRightOnRectangleIcon class="w-5 h-5 mr-2" />
+            <ArrowRightOnRectangleIcon class="h-5 w-5 mr-2" />
             Выйти
           </UButton>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <UCard
+      <div v-if="loading" class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      </div>
+
+      <div v-else class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div
           v-for="beer in beers"
           :key="beer.id"
-          class="hover:shadow-lg transition-shadow"
+          class="bg-white/10 backdrop-blur-lg rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-white/20"
         >
-          <template #header>
-            <div class="relative h-48 overflow-hidden rounded-t-lg">
-              <img
-                :src="beer.image"
-                :alt="beer.name"
-                class="absolute inset-0 w-full h-full object-cover"
-              />
-            </div>
-          </template>
-
-          <div class="space-y-3">
-            <h2 class="text-xl font-semibold text-gray-900">{{ beer.name }}</h2>
-            <p class="text-gray-600 line-clamp-2">{{ beer.description }}</p>
-            <div class="flex justify-between items-center pt-2">
-              <span class="text-lg font-bold text-primary-600">{{ beer.price }} ₽</span>
-              <UBadge
-                :color="beer.stock > 0 ? 'green' : 'red'"
-                variant="subtle"
-              >
-                {{ beer.stock > 0 ? 'В наличии' : 'Нет в наличии' }}
-              </UBadge>
+          <div class="relative h-64 overflow-hidden">
+            <img
+              v-if="!beer.imageError"
+              :src="beer.image"
+              :alt="beer.name"
+              class="w-full h-full object-cover"
+              @error="() => beer.imageError = true"
+            />
+            <div v-else class="w-full h-full flex items-center justify-center bg-gray-800">
+              <span class="text-gray-400 text-lg">Нет изображения</span>
             </div>
           </div>
-        </UCard>
+          <div class="p-6">
+            <h2 class="text-xl font-semibold text-white mb-2">{{ beer.name }}</h2>
+            <p class="text-gray-300 mb-4">{{ beer.description }}</p>
+            <div class="flex justify-between items-center">
+              <span class="text-2xl font-bold text-indigo-400">{{ beer.price }} ₽</span>
+              <UButton
+                v-if="isAdmin"
+                color="red"
+                variant="ghost"
+                @click="deleteBeer(beer.id)"
+              >
+                Удалить
+              </UButton>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

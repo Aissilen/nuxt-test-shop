@@ -3,7 +3,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
   ssr: true,
-  modules: ['nuxt-vuefire'],
+  modules: ['nuxt-vuefire', '@nuxt/ui'],
+  css: ['~/assets/css/main.css'],
+  postcss: {
+    plugins: {
+      '@tailwindcss/postcss': {},
+      autoprefixer: {},
+    },
+  },
   vuefire: {
     auth: {
       enabled: true,

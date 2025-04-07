@@ -40,7 +40,7 @@ const handleSignOut = () => {
             v-if="isAdmin"
             color="primary"
             to="/admin/create"
-            class="shadow-sm"
+            class="shadow-md hover:shadow-lg transition-shadow"
           >
             <PlusIcon class="w-5 h-5 mr-2" />
             Добавить пиво
@@ -49,6 +49,7 @@ const handleSignOut = () => {
             @click="handleSignOut"
             color="gray"
             variant="ghost"
+            class="hover:bg-gray-100"
           >
             <ArrowRightOnRectangleIcon class="w-5 h-5 mr-2" />
             Выйти
@@ -56,11 +57,11 @@ const handleSignOut = () => {
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <UCard
           v-for="beer in beers"
           :key="beer.id"
-          class="hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+          class="hover:shadow-lg transition-shadow"
         >
           <template #header>
             <div class="relative h-48 overflow-hidden rounded-t-lg">

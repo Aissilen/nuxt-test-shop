@@ -5,12 +5,6 @@ export default defineNuxtConfig({
   ssr: true,
   modules: ['nuxt-vuefire', '@nuxt/ui'],
   css: ['~/assets/css/main.css'],
-  postcss: {
-    plugins: {
-      '@tailwindcss/postcss': {},
-      autoprefixer: {},
-    },
-  },
   vuefire: {
     auth: {
       enabled: true,

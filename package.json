@@ -23,7 +23,6 @@
     "vuefire": "^3.2.1"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^6.13.2",
     "@types/node": "^22.14.0",
     "typescript": "^5.4.2"
   },

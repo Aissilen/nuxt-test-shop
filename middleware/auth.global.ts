@@ -1,11 +1,23 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
-  const user = await getCurrentUser();
+import { onAuthStateChanged } from 'firebase/auth'
+import { useFirebase } from '~/composables/useFirebase'
 
-  if (user && to.name === 'login') {
-    return navigateTo('/');
+export default defineNuxtRouteMiddleware((to) => {
+  if (process.server) {
+    return // Пропускаем middleware на сервере
   }
 
-  if (!user && to.name !== 'login') {
-    return navigateTo('/login');
-  }
+  const { auth } = useFirebase()
+  return new Promise((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      console.log('Middleware: User:', user) // Для отладки
+
+      if (user && to.name === 'login') {
+        resolve(navigateTo('/'))
+      } else if (!user && to.name !== 'login') {
+        resolve(navigateTo('/login'))
+      } else {
+        resolve()
+      }
+    })
+  })
 })

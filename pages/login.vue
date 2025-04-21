@@ -60,17 +60,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { useAuth } from '~/composables/useAuth'
 
 const router = useRouter()
+const { signIn } = useAuth()
 const email = ref('')
 const password = ref('')
 
 const handleLogin = async () => {
   try {
-    const auth = getAuth()
-    await signInWithEmailAndPassword(auth, email.value, password.value)
-    router.push('/')
+    const success = await signIn(email.value, password.value)
+    if (success) {
+      router.push('/')
+    }
   } catch (error) {
     console.error('Error logging in:', error)
   }

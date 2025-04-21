@@ -56,17 +56,17 @@
 </template>
 
 <script setup lang="ts">
-const { currentUser } = useFirebaseAuth()
+// const { currentUser } = useFirebaseAuth()
 const router = useRouter()
 const loading = ref(false)
 
 // Проверка на админа
-const isAdmin = computed(() => currentUser.value?.email === 'admin@example.com') // Замените на ваш email админа
+// const isAdmin = computed(() => currentUser.value?.email === 'admin@example.com') // Замените на ваш email админа
 
 // Если не админ, перенаправляем на главную
-if (!isAdmin.value) {
-  router.push('/')
-}
+// if (!isAdmin.value) {
+//   router.push('/')
+// }
 
 const form = ref({
   name: '',

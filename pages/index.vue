@@ -1,55 +1,21 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { collection, getDocs, deleteDoc, doc } from 'firebase/firestore'
-import { getAuth, signOut } from 'firebase/auth'
 import { PlusIcon, ArrowRightOnRectangleIcon } from '@heroicons/vue/24/outline'
-import { useFirestore } from 'vuefire'
+import { useAuth } from '~/composables/useAuth'
+import { useBeers } from '~/composables/useBeers'
 
 const router = useRouter()
-const db = useFirestore()
-const beers = ref([])
-const loading = ref(true)
-const isAdmin = ref(false)
+const { isAdmin, signOut } = useAuth()
+const { beers, loading, fetchBeers, deleteBeer } = useBeers()
 
 onMounted(async () => {
-  try {
-    const querySnapshot = await getDocs(collection(db, 'beers'))
-    beers.value = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-      imageError: false
-    }))
-  } catch (error) {
-    console.error('Error fetching beers:', error)
-  } finally {
-    loading.value = false
-  }
-
-  // Check if user is admin
-  const auth = getAuth()
-  const user = auth.currentUser
-  if (user) {
-    // Here you would typically check the user's role in your database
-    // For now, we'll just set isAdmin to true for demonstration
-    isAdmin.value = true
-  }
+  await fetchBeers()
 })
-
-const deleteBeer = async (id: string) => {
-  try {
-    await deleteDoc(doc(db, 'beers', id))
-    beers.value = beers.value.filter(beer => beer.id !== id)
-  } catch (error) {
-    console.error('Error deleting beer:', error)
-  }
-}
 
 const handleSignOut = async () => {
   try {
-    const auth = getAuth()
-    await signOut(auth)
-    router.push('/login')
+    await signOut()
   } catch (error) {
     console.error('Error signing out:', error)
   }

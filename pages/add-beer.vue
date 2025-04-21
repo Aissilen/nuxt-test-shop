@@ -66,11 +66,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { collection, addDoc } from 'firebase/firestore'
-import { useFirestore } from 'vuefire'
+import { useBeers } from '~/composables/useBeers'
 
 const router = useRouter()
-const db = useFirestore()
+const { addBeer } = useBeers()
+
 const form = ref({
   name: '',
   description: '',
@@ -80,12 +80,16 @@ const form = ref({
 
 const handleSubmit = async () => {
   try {
-    await addDoc(collection(db, 'beers'), {
-      ...form.value,
+    const beerId = await addBeer({
+      name: form.value.name,
+      description: form.value.description,
       price: Number(form.value.price),
-      createdAt: new Date()
+      image: form.value.image
     })
-    router.push('/')
+    
+    if (beerId) {
+      router.push('/')
+    }
   } catch (error) {
     console.error('Error adding beer:', error)
   }

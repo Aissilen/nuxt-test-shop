@@ -1663,7 +1663,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:3.16.2, @nuxt/kit@npm:^3.13.2, @nuxt/kit@npm:^3.14.1592, @nuxt/kit@npm:^3.15.4, @nuxt/kit@npm:^3.16.0, @nuxt/kit@npm:^3.16.1, @nuxt/kit@npm:^3.16.2":
+"@nuxt/kit@npm:3.16.2, @nuxt/kit@npm:^3.13.2, @nuxt/kit@npm:^3.15.4, @nuxt/kit@npm:^3.16.0, @nuxt/kit@npm:^3.16.1, @nuxt/kit@npm:^3.16.2":
   version: 3.16.2
   resolution: "@nuxt/kit@npm:3.16.2"
   dependencies:
@@ -2148,13 +2148,6 @@ __metadata:
   version: 1.2.1
   resolution: "@poppinss/exception@npm:1.2.1"
   checksum: 10c0/53022f852607a7ff2294b28375990e66e22379118d32bf6743e5d74c32e046e7b7cd19f3ddd747c2fca120759d5e4800365ba5a831d733d9c516b54919ab4116
-  languageName: node
-  linkType: hard
-
-"@posva/lru-cache@npm:^10.0.1":
-  version: 10.0.1
-  resolution: "@posva/lru-cache@npm:10.0.1"
-  checksum: 10c0/d8df201dad3ee44c1f611b9c5e94c27cb816bec46f374990b80b8c1d1bd9a1b17be3ab79708016c5a6ebbc1b88b6ba699fbb6df0466d0004647da7e943505c41
   languageName: node
   linkType: hard
 
@@ -6438,13 +6431,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash-es@npm:^4.17.21":
-  version: 4.17.21
-  resolution: "lodash-es@npm:4.17.21"
-  checksum: 10c0/fb407355f7e6cd523a9383e76e6b455321f0f153a6c9625e21a8827d10c54c2a2341bd2ae8d034358b60e07325e1330c14c224ff582d04612a46a4f0479ff2f2
-  languageName: node
-  linkType: hard
-
 "lodash.camelcase@npm:^4.3.0":
   version: 4.3.0
   resolution: "lodash.camelcase@npm:4.3.0"
@@ -7201,38 +7187,11 @@ __metadata:
     firebase-admin: "npm:^13.2.0"
     firebase-functions: "npm:^6.3.2"
     nuxt: "npm:^3.16.2"
-    nuxt-vuefire: "npm:1.0.5"
     typescript: "npm:^5.4.2"
     vue: "npm:^3.5.13"
     vue-router: "npm:^4.5.0"
-    vuefire: "npm:^3.2.1"
   languageName: unknown
   linkType: soft
-
-"nuxt-vuefire@npm:1.0.5":
-  version: 1.0.5
-  resolution: "nuxt-vuefire@npm:1.0.5"
-  dependencies:
-    "@nuxt/kit": "npm:^3.14.1592"
-    "@posva/lru-cache": "npm:^10.0.1"
-    lodash-es: "npm:^4.17.21"
-    strip-json-comments: "npm:^5.0.1"
-  peerDependencies:
-    "@firebase/app-types": ">=0.8.1"
-    firebase: ^9.0.0 || ^10.0.0 || ^11.1.0
-    firebase-admin: ^11.3.0 || ^12.2.0 || ^13.0.1
-    firebase-functions: ^4.1.0 || ^5.0.0 || ^6.1.2
-    vuefire: ">=3.2.1"
-  peerDependenciesMeta:
-    "@firebase/app-types":
-      optional: true
-    firebase-admin:
-      optional: true
-    firebase-functions:
-      optional: true
-  checksum: 10c0/47f0ddcea9182a89c5d9c7fd4be09fc13f895dea4b08019bfc444a45ae2f2f2560eeeb14472e97b9b308f5654e2f7ed7509f8bcb9ee588d3612b20ac9fc7dcfe
-  languageName: node
-  linkType: hard
 
 "nuxt@npm:^3.16.2":
   version: 3.16.2
@@ -8893,13 +8852,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-json-comments@npm:^5.0.1":
-  version: 5.0.1
-  resolution: "strip-json-comments@npm:5.0.1"
-  checksum: 10c0/c9d9d55a0167c57aa688df3aa20628cf6f46f0344038f189eaa9d159978e80b2bfa6da541a40d83f7bde8a3554596259bf6b70578b2172356536a0e3fa5a0982
-  languageName: node
-  linkType: hard
-
 "strip-literal@npm:^3.0.0":
   version: 3.0.0
   resolution: "strip-literal@npm:3.0.0"
@@ -9847,7 +9799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-demi@npm:>=0.13.0, vue-demi@npm:>=0.14.8, vue-demi@npm:latest":
+"vue-demi@npm:>=0.13.0, vue-demi@npm:>=0.14.8":
   version: 0.14.10
   resolution: "vue-demi@npm:0.14.10"
   peerDependencies:
@@ -9896,26 +9848,6 @@ __metadata:
     typescript:
       optional: true
   checksum: 10c0/4bbb5caf3f04fed933b01c100804f3693ff902984a3152ea1359a972264fa3240f6551d32f0163a79c64df3715b4d6691818c9f652cdd41b2473c69e2b0a373d
-  languageName: node
-  linkType: hard
-
-"vuefire@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "vuefire@npm:3.2.1"
-  dependencies:
-    vue-demi: "npm:latest"
-  peerDependencies:
-    consola: ^3.2.3
-    firebase: ^9.0.0 || ^10.0.0 || ^11.0.0
-    vue: ^2.7.0 || ^3.2.0
-  peerDependenciesMeta:
-    "@vue/composition-api":
-      optional: true
-    consola:
-      optional: true
-    firebase:
-      optional: true
-  checksum: 10c0/26760c3268dcaa91c86b43e799fedfcaaa9f4912b920735626f8b434fc0beb2019a5d4b71f537cb17d1a88ca69cef6ef60b5c60325e184deddeaef957615bf8f
   languageName: node
   linkType: hard
 
